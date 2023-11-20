@@ -1,22 +1,13 @@
 #!/usr/bin/python3
-""" Place Module for HBNB project. Defines the place class"""
-import models
+"""Place Module for HBNB project. Defines the place class"""
 from os import getenv
 from models.base_model import Base
-from models.review import Amenity
+from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.review import Review
-from sqlalchemy import Column
-from sqlalchemy import Float
-from sqlalchemy import ForeignKey
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import Table
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
-
-
-""" A place to stay """
 relationship_table = Table("place_amenity", Base.metadata,
                           Column("place_id", String(60),
                                  ForeignKey("places.id"),
@@ -24,29 +15,28 @@ relationship_table = Table("place_amenity", Base.metadata,
                           Column("amenity_id", String(60),
                                  ForeignKey("amenities.id"),
                                  primary_key=True, nullable=False))
+
 class Place(BaseModel, Base):
-    """represents  a place for MSQL data base, 
-        Inherits from the base and base model and links to the databse
+    """Represents a place for MSQL database.
+    Inherits from the base and base model and links to the database.
     """
+    __tablename__ = "places"
 
-#define a table for places
-__tablename__ = "places"
-city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
-user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
-name = Column(String(128), nullable=False)
-description = Column(String(1024))
-number_rooms = Column(Integer, default=0)
-max_guest = Column(Integer, default=0)
-price_by_night = Column(Integer, default=0)
-latitude = Column(Float)
-longitude = Column(Float)
+    city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
+    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
+    name = Column(String(128), nullable=False)
+    description = Column(String(1024))
+    number_rooms = Column(Integer, default=0)
+    max_guest = Column(Integer, default=0)
+    price_by_night = Column(Integer, default=0)
+    latitude = Column(Float)
+    longitude = Column(Float)
 
-reviews = relationship("Review", backref="place", cascade="delete")
-amenities = relationship("Amenity", secondary="place_amenity",
-                             viewonly=False)
-amenity_ids = []
+    reviews = relationship("Review", backref="place", cascade="delete")
+    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
+    amenity_ids = []
 
-if getenv("HBNB_TYPE_STORAGE", None) != "db":
+    if getenv("HBNB_TYPE_STORAGE", None) != "db":
         @property
         def reviews(self):
             """Get a list of all linked Reviews."""
@@ -69,3 +59,4 @@ if getenv("HBNB_TYPE_STORAGE", None) != "db":
         def amenities(self, value):
             if isinstance(value, Amenity):
                 self.amenity_ids.append(value.id)
+
