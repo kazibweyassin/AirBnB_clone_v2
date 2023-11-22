@@ -2,9 +2,9 @@
 """ Database Storage Engine"""
 
 import os
-from sqlalchemy import create_engine,
-from sqlalchemy.orm import declarative_base, sessionmaker
-from models.base_model import BaseModel
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -12,8 +12,6 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-
-Base = declarative_base();
 
 class DBStorage:
     """ This is a databse storage class"""
@@ -34,10 +32,18 @@ class DBStorage:
 
     def all(self, cls=None):
         """ Query all objects depending on class name"""
+        classes = [User, State, City, Amenity, Place, Review]
         if cls:
-            return self.__session.query(cls).all()
-        else:
-            return {self.__session.query(User, State, City, Amenity, Place, Review).all()}
+            classes = [cls] if cls not in classes else [cls]
+
+        results = {}
+        for c in classes:
+            query_res = self.__session.query(c).all()
+            for obj in query_res:
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                results[key] = obj
+
+        return results
 
     def new(self, obj):
         """ Adds a new obj to the db"""
