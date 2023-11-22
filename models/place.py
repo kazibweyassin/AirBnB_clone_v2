@@ -1,10 +1,7 @@
 #!/usr/bin/python3
 """Place Module for HBNB project. Defines the place class"""
 from os import getenv
-from models.base_model import Base
-from models.amenity import Amenity
-from models.base_model import BaseModel
-from models.review import Review
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
@@ -26,15 +23,14 @@ class Place(BaseModel, Base):
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024))
-    number_rooms = Column(Integer, default=0)
-    max_guest = Column(Integer, default=0)
-    price_by_night = Column(Integer, default=0)
+    number_rooms = Column(Integer, default=0, nullable=False)
+    max_guest = Column(Integer, default=0, nullable=False)
+    price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float)
     longitude = Column(Float)
 
-    reviews = relationship("Review", backref="place", cascade="delete")
-    amenities = relationship("Amenity", secondary="place_amenity",
-                             viewonly=False, overlaps="place_amenities")
+    user = relationship('User', back_populates='places')
+    cities = relationship('City', back_populates='places')
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
@@ -61,3 +57,7 @@ class Place(BaseModel, Base):
             if isinstance(value, Amenity):
                 self.amenity_ids.append(value.id)
 
+    reviews = relationship("Review", back_populates="place",
+                           cascade="all, delete-orphan")
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False, overlaps="place_amenities")
