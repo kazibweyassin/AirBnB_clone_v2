@@ -17,7 +17,8 @@ class State(BaseModel, Base):
         def cities(self):
             """ getter method"""
             all_cities = model.storage.all('City')
-            return [city for city in all_cities.values() if city.state_id == self.id]
+            return [city for city in all_cities.values()
+                    if city.state_id == self.id]
 
     # Set attributes for a database storage
     cities = relationship('City', cascade='all, delete-orphan')

@@ -66,9 +66,11 @@ class FileStorage:
                     for obj_dict in obj_dict_list:
                         obj_class = class_dict[obj_dict["__class__"]]
                         obj_instance = obj_class(**obj_dict)
-                        self.__objects[obj_dict["__class__"] + "." + obj_dict["id"]] = obj_instance
+                        self.__objects[obj_dict["__class__"] + "." +
+                                       obj_dict["id"]] = obj_instance
             except Exception as e:
-                pass        
+                pass
+
     def delete(self, obj=None):
         """An instance that  deletes obj from __objects"""
         if obj is not None:
