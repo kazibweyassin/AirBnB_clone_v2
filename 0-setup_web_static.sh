@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-#Setting up the webserver
+# Setting up the webserver
 
 # Install Nginx
 sudo apt-get update
 sudo apt-get -y install nginx
 
 # Create directories
-mkdir -p /data/web_static/{releases/test,shared,current}
+mkdir -p /data/web_static/{releases/test,current}
 
 # Create "index.html" with hello, wordl
 echo "Hello, World" | sudo tee /data/web_static/releases/test/index.html > /dev/null
@@ -22,7 +22,7 @@ sudo chown -R ubuntu:ubuntu /data/
 sudo sh -c 'echo "server {
     listen 80;
     listen [::]:80 default_server;
-    server_name emadanwer.tech;
+    server_name abdul17.tech;
     location /hbnb_static {
         alias /data/web_static/current/;
     }
