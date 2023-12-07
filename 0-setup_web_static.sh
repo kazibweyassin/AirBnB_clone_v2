@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 
 # Install Nginx
-apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-service nginx start
-mkdir /data/
-mkdir /data/web_static/
-mkdir /data/web_static/releases/
-mkdir /data/web_static/shared/
-mkdir /data/web_static/releases/test/
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+sudo service nginx start
+
+# Create directories
+mkdir -p /data/web_static/{releases/test,shared,current}
+
+# Create "index.html" with hello, wordl
 echo "Hello, World" > /data/web_static/releases/test/index.html
-ln -s /data/web_static/releases/test/ /data/web_static/current
-sudo chown ubuntu 700 /data/
+
+# Create a symbolic link
+sudo ln -sfn /data/web_static/releases/test/ /data/web_static/current
+
+#Set ownership and permissions
+sudo chown -R ubuntu:ubuntu /data/
+
