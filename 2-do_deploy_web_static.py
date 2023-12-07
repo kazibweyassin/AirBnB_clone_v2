@@ -7,6 +7,7 @@
 from fabric.api import env, local, put, run
 from datetime import datetime
 from os.path import exists, isdir
+env.hosts = ['3.80.18.141', '54.208.94.156']
 
 
 def do_pack():
@@ -20,6 +21,7 @@ def do_pack():
         return file_name
     except Exception:
         return None
+
 
 def do_deploy(archive_path):
     """distributes an archive to the web servers"""
@@ -38,5 +40,5 @@ def do_deploy(archive_path):
         run('rm -rf /data/web_static/current')
         run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-    except:
+    except Exception:
         return False
