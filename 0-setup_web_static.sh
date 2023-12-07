@@ -19,14 +19,15 @@ sudo ln -sfn /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 
 # Update Nginx config
-nginx_config="/etc/nginx/sites-available/default"
-nginx_config_link="/etc/nginx/sites-enabled/default"
+# Update the Nginx configuration to serve the content
+sudo sh -c 'echo "server {
+    listen 80;
+    listen [::]:80 default_server;
+    server_name emadanwer.tech;
+    location /hbnb_static {
+        alias /data/web_static/current/;
+    }
+}" > /etc/nginx/sites-available/default'
 
-sudo sed -i '/server_name _/a \\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}' "$nginx_config"
-
-# Remove and recreate the symbolic link to apply changes
-[ -e "$nginx_config_link" ] && sudo rm "$nginx_config_link"
-sudo ln -s "$nginx_config" "$nginx_config_link"
-
-# Restart Nginx to apply changes
+# restart nginx
 sudo service nginx restart
