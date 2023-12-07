@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#Setting up the webserver
 
 # Install Nginx
 sudo apt-get update
