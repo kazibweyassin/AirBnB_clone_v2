@@ -58,11 +58,11 @@ def num_one(n):
 
 
 @app.route('/number_odd_or_even/<n>', strict_slashes=False)
-def odd_even(n):
-    """ Checks if n is odd or even"""
+def num_odd_or_even(n):
+    """ Check odd or even"""
     try:
         n = int(n)
-        return render_template('6-number_odd_or_even.html', n)
+        return render_template('6-number_odd_or_even.html', n=n)
     except ValueError:
         abort(404)
 
