@@ -3,7 +3,7 @@
 
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
@@ -67,7 +67,7 @@ class DBStorage:
 
     def close(self):
         """ This method removes items from db"""
-        Base.metadata.create_all(self.__engine)
-        self.Session = sessionmaker(bind=self.__engine)
-        self.__session = self.Session()
-        self.__session.remove()
+        session_factory = sessionmaker(bind=some_engine)
+        Session = scoped_session(session_factory)
+        some_session = Session()
+        Session.remove()
