@@ -67,5 +67,4 @@ class DBStorage:
 
     def close(self):
         """ This method removes items from db"""
-        self.reload()
         self.__session.remove()
