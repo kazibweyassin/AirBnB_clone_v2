@@ -64,3 +64,8 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         self.Session = sessionmaker(bind=self.__engine)
         self.__session = self.Session()
+
+    def close(self):
+        """ This method removes items from db"""
+        self.reload()
+        self.__session.remove()
