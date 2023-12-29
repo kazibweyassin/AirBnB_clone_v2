@@ -67,7 +67,4 @@ class DBStorage:
 
     def close(self):
         """ This method removes items from db"""
-        session_factory = sessionmaker(bind=some_engine)
-        Session = scoped_session(session_factory)
-        some_session = Session()
-        Session.remove()
+        self.__session.remove()
