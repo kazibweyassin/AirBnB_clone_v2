@@ -62,12 +62,10 @@ class DBStorage:
     def reload(self):
         """ Creates all tables in the database"""
         Base.metadata.create_all(self.__engine)
-        self.Session = sessionmaker(bind=self.__engine)
+        self.Session = scoped_session(sessionmaker(bind=self.__engine))
         self.__session = self.Session()
 
     def close(self):
         """ This method removes items from db"""
-        Base.metadata.create_all(self.__engine)
-        self.Session = scoped_session(sessionmaker())
-        self.Session.configure(bind=self.__engine)
         self.Session.remove()
+        self.reload()
