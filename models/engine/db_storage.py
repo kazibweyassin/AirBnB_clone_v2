@@ -3,7 +3,7 @@
 
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
@@ -62,10 +62,12 @@ class DBStorage:
     def reload(self):
         """ Creates all tables in the database"""
         Base.metadata.create_all(self.__engine)
-        self.Session = scoped_session(sessionmaker(bind=self.__engine))
+        self.Session = sessionmaker(bind=self.__engine)
         self.__session = self.Session()
-
+        
     def close(self):
-        """ This method removes items from db"""
-        self.Session.remove()
-        self.reload()
+        """ Close the session"""
+        self.__session.remove()
+        
+        
+        

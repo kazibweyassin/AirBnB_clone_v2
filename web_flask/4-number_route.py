@@ -1,51 +1,41 @@
 #!/usr/bin/python3
-
 """
-    Hello route
+starts a Flask web application
 """
 
-from flask import Flask, abort
-
-
+from flask import Flask
 app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def root():
-    """ Hello world"""
-    return "Hello HBNB!"
+def index():
+    """returns Hello HBNB!"""
+    return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """ Displays hbnb"""
-    return "HBNB"
+    """returns HBNB"""
+    return 'HBNB'
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def hello(text):
-    """ With a parameter"""
-    formatted = text.replace('_', ' ')
-    return f"C {formatted}"
+def cisfun(text):
+    """display “C ” followed by the value of the text variable"""
+    return 'C ' + text.replace('_', ' ')
 
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def pytext(text="is cool"):
-    """ With param and default"""
-    formatted = text.replace('_', ' ')
-    return f"Python {formatted}"
+def pythoniscool(text='is cool'):
+    """display “Python ”, followed by the value of the text variable"""
+    return 'Python ' + text.replace('_', ' ')
 
 
-@app.route('/number/<n>', strict_slashes=False)
-def number(n):
-    """ Checks if n is int"""
-    try:
-        n = int(n)
-        return f"{n} is a number"
-    except ValueError:
-        abort(404)
+@app.route('/number/<int:n>', strict_slashes=False)
+def imanumber(n):
+    """display “n is a number” only if n is an integer"""
+    return "{:d} is a number".format(n)
 
-
-if __name__ == "__main__":
-    app.run(debug=True, port='5000', host='0.0.0.0')
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')
