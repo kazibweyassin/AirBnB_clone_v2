@@ -5,6 +5,7 @@
 from models import storage
 from models.state import State
 from models.city import City
+import os
 
 """
  Objects creations
@@ -31,7 +32,9 @@ city_2_1.save()
  Verification
 """
 print("")
+print("testing..............")
 all_states = storage.all(State)
+print(os.environ.get("HBNB_STORAGE_TYPE"))
 for state_id, state in all_states.items():
     for city in state.cities:
         print("Find the city {} in the state {}".format(city, state))
